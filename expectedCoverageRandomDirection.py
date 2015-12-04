@@ -19,11 +19,16 @@ def markPoint(x, y, dimension, radius, visited):
 				visited[i][j] = 1
 	return visited
 
+def inBounds(coord, dimension):
+	if coord > 0 and coord < dimension:
+		return True
+	return False
+
 def main():
 	dimension = 1000
 	radius = 100
 
-	walk_distance = 1 # toggle for performance
+	walk_distance = 10 # toggle for performance
 
 	saturated = False
 	users = 30
@@ -42,8 +47,30 @@ def main():
 				# choose a random direction for the user to walk
 				direction = int(random.randrange(0,4))
 				for j in range(0,walk_distance):
-					if direction == 0 and x > :
-						x -= 1
+					if direction == 0:
+						if inBounds(x-1, dimension):
+							x -= 1
+							visited = markPoint(x,y,dimension,radius,visited)
+						else:
+							direction = int(random.randrange(0,4))
+					if direction == 1:
+						if inBounds(y+1, dimension):
+							y += 1
+							visited = markPoint(x,y,dimension,radius,visited)
+						else:
+							direction = int(random.randrange(0,4))
+					if direction == 2:
+						if inBounds(x+1, dimension):
+							x += 1
+							visited = markPoint(x,y,dimension,radius,visited)
+						else:
+							direction = int(random.randrange(0,4))
+					if direction == 3:
+						if inBounds(y-1, dimension):
+							y -= 1
+							visited = markPoint(x,y,dimension,radius,visited)
+						else:
+							direction = int(random.randrange(0,4))
 
 				#plt.plot(i, j, 'bo')
 				#plt.plot(x, y, 'rs')
