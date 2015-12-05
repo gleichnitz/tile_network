@@ -7,15 +7,15 @@ import random
 
 def markPoint(x, y, dimension, radius, visited):
 	# iterate over the square the circle around the user is inscribed in
-	for i in np.arange(x - radius/2., x + radius/2. + 1):
+	for i in np.arange(x - radius, x + radius + 1):
 		if (i < 0 or i >= dimension):
 			continue;
-		for j in np.arange(y - radius/2, y + radius/2. + 1):
+		for j in np.arange(y - radius, y + radius + 1):
 			if (j < 0 or j >= dimension):
 				continue;
 			# distance from current point to center of circle
-			distToCenter = math.pow(x - i, 2) + math.pow(y - j, 2)
-			if distToCenter <= radius/2.: # ... the point is within the circle -> covered
+			distToCenter = math.sqrt(math.pow(x - i, 2) + math.pow(y - j, 2))
+			if distToCenter <= radius: # ... the point is within the circle -> covered
 				visited[i][j] = 1
 	return visited
 
@@ -32,7 +32,7 @@ def main():
 
 	saturated = False
 	users = 30
-	trials = 20 # toggle for performance
+	trials = 5 # toggle for performance
 
 	while(saturated == False):
 		totalVisits = 0
@@ -75,7 +75,7 @@ def main():
 				#plt.plot(i, j, 'bo')
 				#plt.plot(x, y, 'rs')
 			totalVisits += visited.sum()
-		coverage = (1.*totalVisits)/(dimension*trials*10)
+		coverage = (1.*totalVisits)/(dimension*trials*dimension)
 		print users, coverage, totalVisits
 		plt.plot(users, coverage, 'bs')
 
