@@ -12,17 +12,14 @@ def main():
 	# I kept dimension = 10 to match Sams code. When we calculate expected coverage,
 	# this will be good for consistency.
 
-
 	with open('mapallpaths3.csv', 'rb') as csvfile:
 		csvreader = csv.reader(csvfile, delimiter=',', quotechar='|')
 		roadBlockListImport = list(csvreader)
 		roadBlockList = roadBlockListImport[:32] # got rid of extra empty lines in file
 		roadblocks = np.array(roadBlockList).astype('int')
-		print roadblocks.shape
 
-
-		dimensionx = 3.1
-		dimensiony = 3.6
+		dimensionx = 3.1 # because it's really 31 but error is still factored in
+		dimensiony = 3.6 # because it's really 36 but error is still factored in
 		error = 0.1 # toggle for performance
 
 		saturated = False
@@ -42,7 +39,6 @@ def main():
 				if roadblocks[x, y] == 1:
 					roadblockCheck = True
 			userLocations.append((x, y))
-			#print roadblocks[x, y]
 
 		# assign random destination locations
 		for i in range(destinations):
@@ -54,7 +50,6 @@ def main():
 					roadblockCheck = True
 				if (x,y) in userLocations:
 					roadBlockCheck = False
-
 			destinationLocations.append((x, y))
 			efficientPaths.append([]) # append an empty array to later keep track of efficient paths per destination
 
@@ -77,6 +72,7 @@ def main():
 			# check each point directly near current point and choose to move to point that is closest to destination
 			destinationReached = False
 			
+			# visited points for finding a good path
 			visitedPoints = []
 			while (destinationReached == False):
 				possibleNextSteps = []
@@ -93,7 +89,7 @@ def main():
 
 						possibleNextSteps.append((i,j))
 
-				chosenPoint = possibleNextSteps[0]
+				chosenPoint = possibleNextSteps[0] # initialize chosen point to a known value
 				dMin = 1000000
 				for (i, j) in possibleNextSteps:
 						# distance from current point to dest
@@ -112,10 +108,6 @@ def main():
 				# keep track of path in lists for plotting
 				pathx.append(userx)
 				pathy.append(usery)
-				print "***"
-				print userx, usery
-				print destx, desty
-				# print roadblocks[userx, usery]
 
 				if (userx == destx and usery == desty): # if we have reached our destination -> destinationReached = true
 					destinationReached = True
@@ -132,7 +124,7 @@ def main():
 			plt.ylabel('y')
 			# plot each invidiual path
 			for (x, y) in i:
-				plt.plot(y, x, marker=".")
+				plt.plot(y, x, marker=".") # y and x are backwards here because of dimensions of overlaid map
 				plt.plot(y[len(y)-1], x[len(x)-1], 'o')
 		plt.show()
 
