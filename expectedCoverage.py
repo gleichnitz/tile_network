@@ -29,7 +29,7 @@ def main():
 						if (j < 0 or j > dimension):
 							continue;
 						# distance from current point to center of circle
-						distToCenter = math.pow(x - i, 2) + math.pow(y - j, 2)
+						distToCenter = math.sqrt(math.pow(x - i, 2) + math.pow(y - j, 2))
 						if distToCenter <= 1: # ... the point is within the circle -> covered
 							visited[(1/error)*i][(1/error)*j] = 1
 							#plt.plot(i, j, 'bo')
